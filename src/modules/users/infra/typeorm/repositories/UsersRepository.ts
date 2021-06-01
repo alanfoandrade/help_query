@@ -1,8 +1,9 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, SelectQueryBuilder } from 'typeorm';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
+import Team from '@modules/teams/infra/typeorm/entities/Team';
 import User from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
@@ -13,14 +14,16 @@ class UsersRepository implements IUsersRepository {
   }
 
   public async findAll(excludeAssignedToTeamId?: string): Promise<User[]> {
-    // TODO: listar todos users que NÃO estejam associados ao time com o Id passado em excludeAssignedToTeamId
+    // TODO: Listar todos users que NÃO estiverem associados ao time com o id passado em excludeAssignedToTeamId
 
-    const users = await this.ormRepository
-      .createQueryBuilder('users')
-      .leftJoinAndSelect('users.teams', 'teams', 'teams.id != :teamId', {
-        teamId: excludeAssignedToTeamId,
-      })
-      .getMany();
+    const users = await this.ormRepository.find({
+      relations: ['teams'],
+      where: (qb: SelectQueryBuilder<Team>) => {
+        qb.where('User__teams.id <> :team_id', {
+          team_id: excludeAssignedToTeamId,
+        });
+      },
+    });
 
     return users;
   }
