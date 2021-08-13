@@ -1,8 +1,8 @@
 import Appointment from '../infra/typeorm/entities/Appointment';
 import ICreateAppointmentDTO from '../dtos/ICreateAppointmentDTO';
-import IShowAppointmentStatisticsDTO from '../dtos/IShowAppointmentStatisticsDTO';
+import IAppointmentStatisticsDTO from '../dtos/IAppointmentStatisticsDTO';
 
 export default interface IAppointmentsRepository {
-  getStatistics(): Promise<IShowAppointmentStatisticsDTO>;
+  getStatistics(): Promise<IAppointmentStatisticsDTO>;
   create(data: ICreateAppointmentDTO): Promise<Appointment>;
 }

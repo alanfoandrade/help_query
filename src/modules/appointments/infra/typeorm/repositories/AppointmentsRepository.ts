@@ -3,7 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 
-import IShowAppointmentStatisticsDTO from '@modules/appointments/dtos/IShowAppointmentStatisticsDTO';
+import IAppointmentStatisticsDTO from '@modules/appointments/dtos/IAppointmentStatisticsDTO';
 import Appointment from '../entities/Appointment';
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -13,7 +13,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
     this.ormRepository = getRepository(Appointment);
   }
 
-  public async getStatistics(): Promise<IShowAppointmentStatisticsDTO> {
+  public async getStatistics(): Promise<IAppointmentStatisticsDTO> {
     const statistics = await this.ormRepository
       .createQueryBuilder('appointments')
       .getMany();
@@ -41,14 +41,6 @@ class AppointmentsRepository implements IAppointmentsRepository {
     await this.ormRepository.save(appointment);
 
     return appointment;
-  }
-
-  public async save(appointment: Appointment): Promise<Appointment> {
-    return this.ormRepository.save(appointment);
-  }
-
-  public async delete(appointmentId: string): Promise<void> {
-    await this.ormRepository.softDelete(appointmentId);
   }
 }
 
