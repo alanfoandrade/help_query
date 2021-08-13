@@ -5,4 +5,4 @@
 - `yarn typeorm migration:run` ou `npm run typeorm migration:run` para executar as migrations
 - `yarn dev` para iniciar
 
-- Workspace do Insomnia para testes na raíz do projeto `Insomnia_2021-08-13`
+- Workspace do Insomnia para testes em uma pasta na raíz do projeto `Insomnia_2021-08-13`
