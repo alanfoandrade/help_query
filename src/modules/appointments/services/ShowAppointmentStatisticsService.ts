@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
-import IAppointmentStatisticsDTO from '../dtos/IAppointmentStatisticsDTO';
+import IAppointmentStatisticDTO from '../dtos/IAppointmentStatisticDTO';
 
 @injectable()
 class ShowAppointmentStatisticsService {
@@ -10,7 +10,7 @@ class ShowAppointmentStatisticsService {
     private appointmentsRepository: IAppointmentsRepository,
   ) {}
 
-  public async execute(): Promise<IAppointmentStatisticsDTO> {
+  public async execute(): Promise<IAppointmentStatisticDTO[]> {
     const statistics = await this.appointmentsRepository.getStatistics();
 
     return statistics;

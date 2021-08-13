@@ -3,7 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 
-import IAppointmentStatisticsDTO from '@modules/appointments/dtos/IAppointmentStatisticsDTO';
+import IAppointmentStatisticDTO from '@modules/appointments/dtos/IAppointmentStatisticDTO';
 import Appointment from '../entities/Appointment';
 
 class AppointmentsRepository implements IAppointmentsRepository {
@@ -13,24 +13,15 @@ class AppointmentsRepository implements IAppointmentsRepository {
     this.ormRepository = getRepository(Appointment);
   }
 
-  public async getStatistics(): Promise<IAppointmentStatisticsDTO> {
+  public async getStatistics(): Promise<IAppointmentStatisticDTO[]> {
     const statistics = await this.ormRepository
       .createQueryBuilder('appointments')
-      .getMany();
+      .select('appointments.status as status')
+      .addSelect('COUNT(*) AS count')
+      .groupBy('appointments.status')
+      .getRawMany<IAppointmentStatisticDTO>();
 
-    console.log(statistics);
-
-    // TODO: Retornar contagem de appointments por status.
-    /*
-    Por exemplo:
-    {
-      done: 8278,
-      processing: 570,
-      waiting: 389
-    }
-    */
-
-    return {};
+    return statistics;
   }
 
   public async create(
