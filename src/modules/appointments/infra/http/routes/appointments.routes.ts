@@ -19,7 +19,7 @@ appointmentsRouter.get('/stats', appointmentsController.show);
 appointmentsRouter.post(
   '/',
   celebrate({
-    [Segments.PARAMS]: {
+    [Segments.BODY]: {
       description: Joi.string().allow(null),
       status: Joi.string().valid('done', 'processing', 'waiting'),
     },
