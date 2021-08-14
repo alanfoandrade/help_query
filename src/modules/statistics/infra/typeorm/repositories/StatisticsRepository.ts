@@ -16,15 +16,12 @@ class StatisticsRepository implements IStatisticsRepository {
   public async getModulesCount(): Promise<IModulesCountDTO[]> {
     const modulesCount = await this.entityManager
       .createQueryBuilder()
-      .select('appointments')
-      .from(Appointment, 'appointments')
-      .select('teams')
-      .from(Team, 'teams')
-      .select('users')
-      .from(User, 'users')
       .select('COUNT(appointments)', 'appointments')
+      .from(Appointment, 'appointments')
       .addSelect('COUNT(teams)', 'teams')
+      .from(Team, 'teams')
       .addSelect('COUNT(users)', 'users')
+      .from(User, 'users')
       .getRawMany<IModulesCountDTO>();
 
     return modulesCount;
